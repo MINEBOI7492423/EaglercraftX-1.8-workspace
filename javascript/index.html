@@ -1,23 +1,220 @@
 <!DOCTYPE html>
-<html style="width:100%;height:100%;background-color:black;">
+<html style="width:100%;height:100%;background-color:#0a0a0a;">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
-		<meta name="description" content="EaglercraftX 1.8 test directory HTML page" />
-		<meta name="keywords" content="eaglercraft, eaglercraftx, minecraft, 1.8, 1.8.8" />
-		<title>EaglercraftX 1.8</title>
+		<meta name="description" content="RAZON Client - A Modern Eaglercraft Experience" />
+		<meta name="keywords" content="eaglercraft, eaglercraftx, minecraft, razon, razonclient" />
+		<title>RAZON Client</title>
 		<meta property="og:locale" content="en-US" />
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="EaglercraftX 1.8" />
-		<meta property="og:description" content="test directory HTML page" />
+		<meta property="og:title" content="RAZON Client" />
+		<meta property="og:description" content="A Modern Eaglercraft Experience" />
 		<link type="image/png" rel="shortcut icon" href="favicon.png" />
 		<script type="text/javascript" src="classes.js"></script>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@400;700;900&display=swap');
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				background-color: #0a0a0a;
+				font-family: 'Rajdhani', sans-serif;
+				overflow: hidden;
+			}
+
+			#loading_screen {
+				position: fixed;
+				top: 0; left: 0;
+				width: 100%; height: 100%;
+				background: #0a0a0a;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				z-index: 9999;
+			}
+
+			/* Animated background grid */
+			#loading_screen::before {
+				content: '';
+				position: absolute;
+				top: 0; left: 0;
+				width: 100%; height: 100%;
+				background-image: 
+					linear-gradient(rgba(255,0,0,0.03) 1px, transparent 1px),
+					linear-gradient(90deg, rgba(255,0,0,0.03) 1px, transparent 1px);
+				background-size: 40px 40px;
+				animation: gridMove 8s linear infinite;
+			}
+
+			@keyframes gridMove {
+				0% { transform: translateY(0); }
+				100% { transform: translateY(40px); }
+			}
+
+			/* Corner decorations */
+			.corner {
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				border-color: #ff0000;
+				border-style: solid;
+				opacity: 0.6;
+			}
+			.corner-tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+			.corner-tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+			.corner-bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+			.corner-br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+			.logo_container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 8px;
+				z-index: 1;
+				margin-bottom: 50px;
+			}
+
+			.logo_title {
+				font-family: 'Orbitron', sans-serif;
+				font-size: 72px;
+				font-weight: 900;
+				color: #ff0000;
+				letter-spacing: 12px;
+				text-transform: uppercase;
+				text-shadow: 
+					0 0 20px rgba(255,0,0,0.8),
+					0 0 40px rgba(255,0,0,0.4),
+					0 0 80px rgba(255,0,0,0.2);
+				animation: pulse 2s ease-in-out infinite;
+			}
+
+			@keyframes pulse {
+				0%, 100% { text-shadow: 0 0 20px rgba(255,0,0,0.8), 0 0 40px rgba(255,0,0,0.4); }
+				50% { text-shadow: 0 0 30px rgba(255,0,0,1), 0 0 60px rgba(255,0,0,0.6), 0 0 100px rgba(255,0,0,0.3); }
+			}
+
+			.logo_subtitle {
+				font-family: 'Rajdhani', sans-serif;
+				font-size: 14px;
+				font-weight: 600;
+				color: #888;
+				letter-spacing: 8px;
+				text-transform: uppercase;
+			}
+
+			.logo_line {
+				width: 300px;
+				height: 1px;
+				background: linear-gradient(90deg, transparent, #ff0000, transparent);
+				margin: 10px 0;
+				animation: linePulse 2s ease-in-out infinite;
+			}
+
+			@keyframes linePulse {
+				0%, 100% { opacity: 0.6; }
+				50% { opacity: 1; }
+			}
+
+			.loading_bar_container {
+				width: 400px;
+				z-index: 1;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.loading_bar_bg {
+				width: 100%;
+				height: 3px;
+				background: rgba(255,255,255,0.05);
+				border: 1px solid rgba(255,0,0,0.2);
+				position: relative;
+				overflow: hidden;
+			}
+
+			.loading_bar_fill {
+				height: 100%;
+				background: linear-gradient(90deg, #8b0000, #ff0000, #ff4444);
+				box-shadow: 0 0 10px rgba(255,0,0,0.8);
+				animation: loadingFill 3s ease-in-out infinite;
+				width: 0%;
+			}
+
+			@keyframes loadingFill {
+				0% { width: 0%; }
+				50% { width: 70%; }
+				80% { width: 90%; }
+				100% { width: 100%; }
+			}
+
+			.loading_text {
+				font-family: 'Orbitron', sans-serif;
+				font-size: 11px;
+				color: #ff0000;
+				letter-spacing: 4px;
+				text-transform: uppercase;
+				opacity: 0.7;
+				animation: blink 1.5s ease-in-out infinite;
+			}
+
+			@keyframes blink {
+				0%, 100% { opacity: 0.7; }
+				50% { opacity: 0.3; }
+			}
+
+			.version_tag {
+				position: absolute;
+				bottom: 30px;
+				right: 30px;
+				font-family: 'Orbitron', sans-serif;
+				font-size: 10px;
+				color: rgba(255,0,0,0.4);
+				letter-spacing: 3px;
+				z-index: 1;
+			}
+
+			.made_by {
+				position: absolute;
+				bottom: 30px;
+				left: 30px;
+				font-family: 'Rajdhani', sans-serif;
+				font-size: 12px;
+				color: rgba(255,255,255,0.2);
+				letter-spacing: 2px;
+				z-index: 1;
+			}
+
+			/* Animated side lines */
+			.side_line {
+				position: absolute;
+				width: 1px;
+				height: 100px;
+				background: linear-gradient(180deg, transparent, #ff0000, transparent);
+				animation: slideDown 3s linear infinite;
+				opacity: 0.4;
+			}
+			.side_line:nth-child(1) { left: 15%; animation-delay: 0s; }
+			.side_line:nth-child(2) { left: 85%; animation-delay: 1.5s; }
+
+			@keyframes slideDown {
+				0% { transform: translateY(-100px); opacity: 0; }
+				50% { opacity: 0.4; }
+				100% { transform: translateY(100vh); opacity: 0; }
+			}
+		</style>
 		<script type="text/javascript">
 			"use strict";
 			window.addEventListener("load", function() {
 				if(window.location.href.indexOf("file:") === 0) {
 					alert("HTTP please, do not open this file locally, run a local HTTP server and load it via HTTP");
-				}else {
+				} else {
 					var relayId = Math.floor(Math.random() * 3);
 					window.eaglercraftXOpts = {
 						demoMode: false,
@@ -36,7 +233,6 @@
 							{ addr: "wss://relay.shhnowisnottheti.me/", comment: "ayunami relay #1", primary: relayId === 2 }
 						]
 					};
-
 					var q = window.location.search;
 					if((typeof q === "string") && q[0] === "?" && (typeof window.URLSearchParams !== "undefined")) {
 						q = new window.URLSearchParams(q);
@@ -44,11 +240,49 @@
 						if(s) window.eaglercraftXOpts.joinServer = s;
 					}
 
-					main();
+					// Hide loading screen and start game
+					setTimeout(function() {
+						var loading = document.getElementById("loading_screen");
+						if(loading) {
+							loading.style.transition = "opacity 0.8s ease";
+							loading.style.opacity = "0";
+							setTimeout(function() {
+								loading.style.display = "none";
+							}, 800);
+						}
+						main();
+					}, 3000);
 				}
 			});
 		</script>
 	</head>
-	<body style="margin:0px;width:100%;height:100%;overflow:hidden;background-color:black;" id="game_frame">
+	<body style="margin:0px;width:100%;height:100%;overflow:hidden;background-color:#0a0a0a;" id="game_frame">
+
+		<!-- Loading Screen -->
+		<div id="loading_screen">
+			<div class="corner corner-tl"></div>
+			<div class="corner corner-tr"></div>
+			<div class="corner corner-bl"></div>
+			<div class="corner corner-br"></div>
+			<div class="side_line"></div>
+			<div class="side_line"></div>
+
+			<div class="logo_container">
+				<div class="logo_title">RAZON</div>
+				<div class="logo_line"></div>
+				<div class="logo_subtitle">Client &nbsp;|&nbsp; Eaglercraft 1.8</div>
+			</div>
+
+			<div class="loading_bar_container">
+				<div class="loading_bar_bg">
+					<div class="loading_bar_fill"></div>
+				</div>
+				<div class="loading_text">Initializing...</div>
+			</div>
+
+			<div class="version_tag">v1.0.0</div>
+			<div class="made_by">RAZON CLIENT</div>
+		</div>
+
 	</body>
 </html>
